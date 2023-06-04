@@ -17,36 +17,43 @@ export default function LogIn({navigation}){
                 <View style={styles.container}>
                     <ScrollView contentContainerStyle={{flexGrow: 1}}> 
             
-                        <View style={{marginTop: 20}}>
+                        <View style={{marginTop: 40, marginLeft:20}}>
                             <TouchableOpacity style={{width:40}} onPress={() => navigation.goBack()}>
                                 <Image source={back}/> 
                             </TouchableOpacity> 
                         </View>
             
-                        <View style={{marginTop: 40, marginBottom:40}}>
+                        <View style={{marginTop: 40, marginBottom:40, marginLeft:20}}>
                             <Text style={styles.header_text}>Entrar</Text>
                         </View>
-            
-                        <Text style={styles.label}>Email</Text>
-                        <View style={styles.input_container}>
-                            <TextInput
-                            style={styles.input}
-                            placeholder='Insira seu email aqui...'
-                            placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
-                            />
-                        </View>
 
-                        <Text style={styles.label}>Senha</Text>
-                        <View style={styles.input_container1}>
+
+            
+                        <View style={styles.padding}>
+                            <Text style={styles.label}>Email</Text>
+                            <View style={styles.input_container}>
                                 <TextInput
-                                    style={styles.input}
-                                    placeholder='Insira sua senha aqui...'
-                                    placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
-                                    />
-                                <TouchableOpacity style={{marginLeft:5}}>
-                                    <Image source={olho}/>
-                                </TouchableOpacity>
+                                style={styles.input}
+                                placeholder='Insira seu email aqui...'
+                                placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
+                                />
+                            </View>
                         </View>
+                        
+                        <View style={styles.padding}>
+                            <Text style={styles.label}>Senha</Text>
+                            <View style={styles.input_container1}>
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder='Insira sua senha aqui...'
+                                        placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
+                                        />
+                                    <TouchableOpacity style={{marginLeft:5}}>
+                                        <Image source={olho}/>
+                                    </TouchableOpacity>
+                            </View>
+                        </View>
+                        
 
                         <TouchableOpacity style={styles.buttonTouch} onPress={() => {
                              navigation.navigate('HomeRoute')
@@ -93,7 +100,7 @@ const styles = StyleSheet.create({
     container:{
         width:'100%',
         height:'100%',
-        padding:20,
+        
     },
 
     header_text:{
@@ -102,10 +109,16 @@ const styles = StyleSheet.create({
         fontWeight: 800,
     },
 
+    padding:{
+        marginLeft:20,
+        marginRight:20,
+    },
+
+
     label:{
         color: '#fff',
         fontSize: 16,
-        marginBottom:10,
+        marginBottom:5,
     },
 
     input_container:{
@@ -115,8 +128,10 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         height: 50,
         alignItems:"center",
-        marginBottom:16,
+        marginBottom:20,
         color:'#fff',
+
+        
     },
 
     input_container1:{
@@ -152,6 +167,8 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignContent:"center",
         alignItems:"center",
+        marginLeft:20,
+        marginRight:20,
         
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -179,6 +196,9 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         backgroundColor:"#fff",
         flexDirection:"row",
+        marginLeft:20,
+        marginRight:20,
+
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
@@ -204,6 +224,9 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         backgroundColor:"rgba(0, 63, 143, 1)",
         flexDirection:"row",
+        marginLeft:20,
+        marginRight:20,
+
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,

@@ -55,8 +55,8 @@ export default function InsertPassword({navigation}){
                             <View style={styles.rules}>
                                 <Text style={{color:'#fff'}}>Sua senha deve conter pelo menos 
                                     <Text style={{fontWeight:700}}> 6 caracteres. </Text>
-                                    {/* incluindo
-                                    <Text style={{fontWeight:700}}> letras e números.</Text> */}
+                                    incluindo
+                                    <Text style={{fontWeight:700}}> letras e números.</Text>
                                 </Text>
                                 
                             </View>
