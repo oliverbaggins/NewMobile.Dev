@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
 
     header_text:{
         color: '#fff',
-        fontSize: 24,
         fontWeight: 800,
     },
 
