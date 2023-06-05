@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
     container:{
         width:'100%',
         height:'100%',
-        padding:20,
         alignItems:"center",
         justifyContent:"center",
     },
@@ -63,6 +62,9 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         justifyContent:"center",
         alignItems:"center",
+        marginLeft:20,
+        marginRight:20,
+        
 
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
