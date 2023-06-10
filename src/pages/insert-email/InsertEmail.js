@@ -13,18 +13,8 @@ import olhofechado from "../../../assets/olhosenhafechado.png"
 
 export default function InsertEmail({navigation}){
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isPasswordVisible, setPasswordVisible] = useState(false);
-
-    const handlePasswordChange = (text) => {
-        setPassword(text);
-    };
-
-    const togglePasswordVisibility = () => {
-        setPasswordVisible(!isPasswordVisible);
-    };
-
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
     const handleSignup = async (e) => {
         e.preventDefault();
@@ -225,6 +215,7 @@ const styles = StyleSheet.create({
         marginTop:25,
         height: 50, 
         width:"100%", 
+        marginBottom:20
         marginBottom:20
     },
 

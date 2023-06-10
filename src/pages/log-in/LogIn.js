@@ -9,6 +9,9 @@ import olhofechado from "../../../assets/olhosenhafechado.png"
 import google from "../../../assets/google.png"
 import facebook from "../../../assets/facebook.png"
 
+import olhoaberto from "../../../assets/olhosenha.png"
+import olhofechado from "../../../assets/olhosenhafechado.png"
+
 export default function LogIn({navigation}){
 
 

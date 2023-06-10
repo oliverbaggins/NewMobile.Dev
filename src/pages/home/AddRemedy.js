@@ -15,11 +15,10 @@ export default function AddRemedy({navigation}){
         <SafeAreaView>
             <LinearGradient colors={['#001242', 'rgba(28, 181, 247, 0.7)']}>
                 <View style={styles.container}>
-                    <ScrollView contentContainerStyle={{flexGrow: 1}}> 
 
                         <View style={styles.containerHeader}>
 
-                            <View style={{flexDirection:"row"}}>
+                            <View style={{flexDirection:"row", marginLeft:20, marginTop:20}}>
                                 <View style={{justifyContent:"center"}}>
                                     <Image source={logoperfil}/> 
                                 </View>
@@ -40,38 +39,36 @@ export default function AddRemedy({navigation}){
 
                         </View>
                                     
-                                    
-                        <TouchableOpacity style={styles.addremedy} onPress={() => {
-                            navigation.navigate('CriarLembrete')
-                        }}>
-                            <View>
-                                <Text style={{color:"#fff", fontSize:20, fontWeight:700}}>Clique aqui</Text>
-                                <Text style={{color:"#fff", fontSize:16, fontWeight:700, marginTop:16}}>Para agendar{'\n'}novos horários</Text>
-                            </View>
-                            <Image source={relogio}/> 
-                        </TouchableOpacity>
+                        <View style={{marginRight:20, marginLeft:20}}>
+                           <TouchableOpacity style={styles.addremedy} onPress={() => {
+                                navigation.navigate('CriarLembrete')
+                            }}>
+                                <View>
+                                    <Text style={{color:"#fff", fontSize:20, fontWeight:700}}>Clique aqui</Text>
+                                    <Text style={{color:"#fff", fontSize:16, fontWeight:700, marginTop:16}}>Para agendar{'\n'}novos horários</Text>
+                                </View>
+                                <Image source={relogio}/> 
+                            </TouchableOpacity> 
+                        </View>            
+                        
                         
                                     
                                     
                         <View>
                                     
                             <View>
-                                <Text style={{fontWeight: 700, fontSize: 23, color:"#fff", marginTop:40, marginBottom:25}}>Seus horários</Text>
+                                <Text style={{marginLeft:20 ,fontWeight: 700, fontSize: 23, color:"#fff", marginTop:40, marginBottom:25}}>Seus horários</Text>
                                 
                             </View>
                             {/* <View style={{marginBottom:25}}>
                                 <Dias />
                             </View> */}
                             
-                            <View> 
+                            <View style={{height:"65%"}}>  
                                 <ScheduleList/>
                             </View>
                         
                         </View>
-                        
-
-            
-                    </ScrollView>
                 </View>
             </LinearGradient>
         </SafeAreaView>
@@ -83,7 +80,6 @@ const styles = StyleSheet.create({
     container:{
         width:'100%',
         height:'100%',
-        padding:20,
     },
 
     containerHeader:{
@@ -105,7 +101,9 @@ const styles = StyleSheet.create({
         alignItems:"center",
         paddingRight:16,
         paddingLeft:16,
-        borderRadius:8
+        borderRadius:8,
+        marginRight:20,
+        marginTop:20
     },
 
     addremedy:{
@@ -117,7 +115,7 @@ const styles = StyleSheet.create({
         paddingTop:28,
         justifyContent:"space-around",
         paddingLeft:24,
-        paddingRight:24
+        paddingRight:24,
     },
 
     
