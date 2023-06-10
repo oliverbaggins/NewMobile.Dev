@@ -4,6 +4,8 @@ import {Text, View, StyleSheet,Image, TouchableOpacity, TextInput, SafeAreaView,
 import { LinearGradient } from 'expo-linear-gradient';
 
 import back from "../../../assets/back.png"
+import olhoaberto from "../../../assets/olhosenha.png"
+import olhofechado from "../../../assets/olhosenhafechado.png"
 import google from "../../../assets/google.png"
 import facebook from "../../../assets/facebook.png"
 
@@ -12,14 +14,19 @@ import olhofechado from "../../../assets/olhosenhafechado.png"
 
 export default function LogIn({navigation}){
 
-    const [olho, setolho] = useState(olho);
-    const Botao_olho = () => {
-        if (olho) {
-            return <Image  source={olhofechado} />;
-        } else {
-            return <Image  source={olhoaberto} />;
-        }
-    }
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+    const handlePasswordChange = (text) => {
+        setPassword(text);
+    };
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!isPasswordVisible);
+    };
+
 
     return (
 
@@ -54,14 +61,17 @@ export default function LogIn({navigation}){
                         <View style={styles.padding}>
                             <Text style={styles.label}>Senha</Text>
                             <View style={styles.input_container1}>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder='Insira sua senha aqui...'
-                                        placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
-                                        />
-                                    <TouchableOpacity onPress={() => setolho(!olho)}>
-                                        <Botao_olho olho_selecionado={olhoaberto} />
-                                    </TouchableOpacity>
+                            <TextInput
+                                    style={styles.input}
+                                    placeholder='Insira sua senha aqui...'
+                                    placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
+                                    value={password}
+                                    onChangeText={handlePasswordChange}
+                                    secureTextEntry={!isPasswordVisible}
+                                    />
+                                <TouchableOpacity onPress={togglePasswordVisibility}>
+                                <Image source={isPasswordVisible ? olhoaberto : olhofechado} />
+                                </TouchableOpacity>
                             </View>
                         </View>
                         

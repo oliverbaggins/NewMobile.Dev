@@ -60,6 +60,9 @@ export default function AddRemedy({navigation}){
                                 <Text style={{marginLeft:20 ,fontWeight: 700, fontSize: 23, color:"#fff", marginTop:40, marginBottom:25}}>Seus horários</Text>
                                 
                             </View>
+                            {/* <View style={{marginBottom:25}}>
+                                <Dias />
+                            </View> */}
                             
                             <View style={{height:"65%"}}>  
                                 <ScheduleList/>

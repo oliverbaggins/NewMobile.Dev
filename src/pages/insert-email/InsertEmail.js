@@ -16,15 +16,6 @@ export default function InsertEmail({navigation}){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const [olho, setolho] = useState(olho);
-    const Botao_olho = () => {
-        if (olho) {
-            return <Image  source={olhofechado} />;
-        } else {
-            return <Image  source={olhoaberto} />;
-        }
-    }
-
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
@@ -87,7 +78,7 @@ export default function InsertEmail({navigation}){
                                 <View style={styles.input_container}>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder='Insira seu E-mail aqui...'
+                                    placeholder='Insira seu E-mail aqui......'
                                     placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
                                     value={email}
                                     onChangeText={(text) => setEmail(text)}
@@ -103,18 +94,19 @@ export default function InsertEmail({navigation}){
                                     placeholder='Insira sua senha aqui...'
                                     placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
                                     value={password}
-                                    onChangeText={(text) => setPassword(text)}
+                                    onChangeText={handlePasswordChange}
+                                    secureTextEntry={!isPasswordVisible}
                                     />
-                                    <TouchableOpacity onPress={() => setolho(!olho)}>
-                                        <Botao_olho olho_selecionado={olhoaberto} />
-                                    </TouchableOpacity>
-                                </View>
+                                <TouchableOpacity onPress={togglePasswordVisibility}>
+                                <Image source={isPasswordVisible ? olhoaberto : olhofechado} />
+                                </TouchableOpacity>
+                            </View>
 
                                 <View style={styles.rules}>
                                     <Text style={{color:'#fff'}}>Sua senha deve conter pelo menos 
-                                        <Text style={{fontWeight:700}}> 6 caracteres. </Text>
-                                        incluindo
-                                        <Text style={{fontWeight:700}}> letras e números.</Text>
+                                        <Text style={{fontWeight:700}}> 6 dígitos. </Text>
+                                        {/* incluindo
+                                        <Text style={{fontWeight:700}}> letras e números.</Text> */}
                                     </Text>
                                 </View>
 
@@ -125,7 +117,7 @@ export default function InsertEmail({navigation}){
                         
                         <View style={{alignItems:'center'}}>
 
-                            <Text style={{color:'#fff'}}>Ao se registrar você está aceitando nossos</Text>
+                            {/* <Text style={{color:'#fff'}}>Ao se registrar você está aceitando nossos</Text>
                             <View style={{ flexDirection:'row'}}>
                                 <TouchableOpacity style={{borderBottomWidth:1, borderBottomColor:'#fff'}}>
                                     <Text style={{color:'#fff'}}>Termos de Uso</Text>
@@ -136,7 +128,7 @@ export default function InsertEmail({navigation}){
                                 </TouchableOpacity>
                                 <Text style={{color:'#fff'}}>.</Text>
                             </View>
-                            
+                             */}
 
                             <TouchableOpacity style={styles.buttonTouch} onPress={() => {
                                 navigation.navigate('HomeRoute')
@@ -209,7 +201,8 @@ const styles = StyleSheet.create({
     rules:{
         flexDirection:'row',
         maxWidth:300,
-        marginBottom:60
+        marginBottom:60.,
+        marginLeft: 2
     },
 
     input:{
@@ -222,6 +215,7 @@ const styles = StyleSheet.create({
         marginTop:25,
         height: 50, 
         width:"100%", 
+        marginBottom:20
         marginBottom:20
     },
 
