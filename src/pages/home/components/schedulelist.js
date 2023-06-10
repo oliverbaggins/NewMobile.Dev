@@ -90,6 +90,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 5,
+
+    marginLeft:20,
+    marginRight:20,
   },
   item1: {
     flex: 6,
