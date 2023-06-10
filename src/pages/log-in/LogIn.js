@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Text, View, StyleSheet,Image, TouchableOpacity, TextInput, SafeAreaView, ScrollView} from 'react-native'
 
 import { LinearGradient } from 'expo-linear-gradient';
 
 import back from "../../../assets/back.png"
-import olho from "../../../assets/olhosenha.png"
+import olhoaberto from "../../../assets/olhosenha.png"
+import olhofechado from "../../../assets/olhosenhafechado.png"
 import google from "../../../assets/google.png"
 import facebook from "../../../assets/facebook.png"
 
 export default function LogIn({navigation}){
+
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+    const handlePasswordChange = (text) => {
+        setPassword(text);
+    };
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!isPasswordVisible);
+    };
+
 
     return (
 
@@ -43,14 +58,17 @@ export default function LogIn({navigation}){
                         <View style={styles.padding}>
                             <Text style={styles.label}>Senha</Text>
                             <View style={styles.input_container1}>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder='Insira sua senha aqui...'
-                                        placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
-                                        />
-                                    <TouchableOpacity style={{marginLeft:5}}>
-                                        <Image source={olho}/>
-                                    </TouchableOpacity>
+                            <TextInput
+                                    style={styles.input}
+                                    placeholder='Insira sua senha aqui...'
+                                    placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
+                                    value={password}
+                                    onChangeText={handlePasswordChange}
+                                    secureTextEntry={!isPasswordVisible}
+                                    />
+                                <TouchableOpacity onPress={togglePasswordVisibility}>
+                                <Image source={isPasswordVisible ? olhoaberto : olhofechado} />
+                                </TouchableOpacity>
                             </View>
                         </View>
                         

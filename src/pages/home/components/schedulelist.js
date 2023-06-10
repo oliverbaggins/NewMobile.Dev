@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Modal, Pressable } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const DATA = [
   {
@@ -25,39 +26,40 @@ const DATA = [
 ];
 
 const ScheduleList = () => {
-  const [selectedId, setSelectedId] = useState(null);
-  const colors = ['#90F587', '#F587A2', '#EFC16C'];
-  const initialColorIndex = 0;
-  const [itemColors, setItemColors] = useState(
-    DATA.reduce((acc, item) => {
-      acc[item.id] = initialColorIndex;
-      return acc;
-    }, {})
-  );
+  // const [selectedId, setSelectedId] = useState(null);
+  // const colors = ['#90F587', '#F587A2', '#EFC16C'];
+  // const initialColorIndex = 0;
+  // const [itemColors, setItemColors] = useState(
+  //   DATA.reduce((acc, item) => {
+  //     acc[item.id] = initialColorIndex;
+  //     return acc;
+  //   }, {})
+  // );
 
   const renderItem = ({ item }) => {
-    const isSelected = item.id === selectedId;
-    const backgroundColor = colors[itemColors[item.id]];
+    // const isSelected = item.id === selectedId;
+    // const backgroundColor = colors[itemColors[item.id]];
 
-    const onPressItem = () => {
-      setSelectedId(isSelected ? null : item.id);
-      const nextColorIndex = (itemColors[item.id] + 1) % colors.length;
-      setItemColors((prevItemColors) => ({
-        ...prevItemColors,
-        [item.id]: nextColorIndex,
-      }));
-    };
-
+    // const onPressItem = () => {
+    //   setSelectedId(isSelected ? null : item.id);
+    //   const nextColorIndex = (itemColors[item.id] + 1) % colors.length;
+    //   setItemColors((prevItemColors) => ({
+    //     ...prevItemColors,
+    //     [item.id]: nextColorIndex,
+    //   }));
+    // };
     return (
-      <TouchableOpacity onPress={onPressItem} style={styles.item}>
+      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.item}>
         <View style={styles.item1}>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.title}>{item.time}</Text>
         </View>
-        <View style={[styles.item2, { backgroundColor }]} />
+        {/* <View style={[styles.item2, { backgroundColor }]} /> */}
       </TouchableOpacity>
     );
   };
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -67,6 +69,32 @@ const ScheduleList = () => {
         keyExtractor={item => item.id}
         vertical
       />
+      <View style={styles.centeredView}>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Voltar</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+              >
+                <Text style={styles.textStyle}>Deletar</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+      </View>
+      
     </View>
   );
 };
@@ -99,7 +127,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingRight: 5,
+    paddingRight: 18,
   },
   item2: {
     borderTopRightRadius: 10,
@@ -109,9 +137,58 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   title: {
-    fontSize: 16,
+    color: '#FFF',
+    fontSize: 18,
     fontWeight: '700',
   },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 15,
+    width: 200,
+    height: 130,
+    margin: 20,
+    backgroundColor: "rgba(36, 121, 175, 1)",
+    borderRadius: 20,
+    padding: 35,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F587A2',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+
 });
 
 export default ScheduleList;

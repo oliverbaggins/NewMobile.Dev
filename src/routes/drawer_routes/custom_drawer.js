@@ -26,7 +26,7 @@ export default function CustomDrawer({navigation}) {
           <Image style={styles.iconDrawer}  source={AccIcon} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.touchDrawer} onPress={() => {
-          navigation.navigate('Start')
+          navigation.navigate('StartingRoute')
         }}>
           <Text style={styles.textDrawer}>Sair do Aplicativo</Text>
           <Image style={styles.iconDrawer} source={ExitIcon} />
