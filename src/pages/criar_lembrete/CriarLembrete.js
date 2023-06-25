@@ -9,20 +9,45 @@ import back from "../../../assets/back.png"
 import calendario from "../../../assets/calendario.png"
 import Alarm from "../../../assets/Alarm.png"
 
-export default function CriarLembrete({navigation}){
-    
-const [frequencia, setFrequencia] = useState('a cada 4 horas');
+import remindersService from '../../services/reminders.service';
 
+export default function CriarLembrete({navigation}){
+
+    const [medicine, setMedicine] = useState("")
+    const [startDate, setStartDate] = useState(new Date())
+    const [endDate, setEndDate] = useState(new Date())
+    const [time, setTime] = useState(new Date())
+    const [frequency, setFrequency] = useState("a cada 4 horas")
+    console.log(medicine)
+    console.log(startDate)
+    console.log(endDate)
+    console.log(time)
+    console.log(frequency)
+
+    const handleReminder = async () => {
+        try {
+          await remindersService.addReminder(medicine, startDate, endDate, time, frequency);
+          console.log("Add Reminder");
+          navigation.replace('HomeRoute');
+          navigation.goBack();
+        } catch (error) {
+          console.log(error);
+        }
+    };
+      
+const [frequencia, setFrequencia] = useState('a cada 4 horas');
 const [inicio, setInicio] = useState(new Date())
 const [termino, setTermino] = useState(new Date())
+
 const [showInicio, setShowInicio] = useState(false)
 const [showTermino, setShowTermino] = useState(false)
+
 const onChange1 = (inicio, datainicio) => {
-    setInicio(datainicio);
+    setStartDate(datainicio);
     setShowInicio(false);
 };
 const onChange2 = (termino, datatermino) => {
-    setTermino(datatermino);
+    setEndDate(datatermino);
     setShowTermino(false);
 };
 const showDatepicker1 = () => {
@@ -35,8 +60,9 @@ const showDatepicker2 = () => {
 
 const [horario, setHorario] = useState(new Date())
 const [showHorario, setShowHorario] = useState(false)
+
 const onChange3 = (horario, datahorario) => {
-    setHorario(datahorario);
+    setTime(datahorario);
     setShowHorario(false);
 };
 const showDatepicker3 = () => {
@@ -66,6 +92,8 @@ const showDatepicker3 = () => {
                                     style={{width:"100%", color:"#fff"}}
                                     placeholder='Ex: Dipirona'
                                     placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
+                                    value={medicine}
+                                    onChangeText={(text) => setMedicine(text)}
                                 />
                             </View>
 
@@ -77,13 +105,13 @@ const showDatepicker3 = () => {
                                     <TouchableOpacity onPress={showDatepicker1} >
                                         <View style={styles.input_container_date}>
                                             <Image source={calendario} style={{marginLeft:8, marginRight:12}} /> 
-                                            <Text style={{color:'white'}}>{inicio.toLocaleDateString()}</Text>
+                                            <Text style={{color:'white'}}>{startDate.toLocaleDateString()}</Text>
                                         </View>
                                     </TouchableOpacity>
                                     {showInicio && (
                                         <DateTimePicker
                                         testID='dateTimePicker1'
-                                        value={inicio}
+                                        value={startDate}
                                         mode={'date'}
                                         is24Hour={true}
                                         display="default"
@@ -97,13 +125,13 @@ const showDatepicker3 = () => {
                                     <TouchableOpacity onPress={showDatepicker2} >
                                         <View style={styles.input_container_date}>
                                             <Image source={calendario} style={{marginLeft:8, marginRight:12}} /> 
-                                            <Text style={{color:'white'}}>{termino.toLocaleDateString()}</Text>
+                                            <Text style={{color:'white'}}>{endDate.toLocaleDateString()}</Text>
                                         </View>
                                     </TouchableOpacity>
                                     {showTermino && (
                                         <DateTimePicker
                                         testID='dateTimePicker2'
-                                        value={termino}
+                                        value={endDate}
                                         mode={'date'}
                                         is24Hour={true}
                                         display="default"
@@ -119,13 +147,13 @@ const showDatepicker3 = () => {
                                 <TouchableOpacity onPress={showDatepicker3} style={{width:"100%"}}>
                                         <View style={styles.input_container_horario}>
                                             <Image source={Alarm} style={{marginRight:12}} />
-                                            <Text style={{color:'white'}}>{`${horario.getHours()}:${horario.getMinutes().toString().padStart(2, '0')}`}</Text>
+                                            <Text style={{color:'white'}}>{`${time.getHours()}:${time.getMinutes().toString().padStart(2, '0')}`}</Text>
                                         </View>
                                 </TouchableOpacity>
                                 {showHorario && (
                                         <DateTimePicker
                                         testID='dateTimePicker3'
-                                        value={horario}
+                                        value={time}
                                         mode={'time'}
                                         is24Hour={true}
                                         display="default"
@@ -139,8 +167,8 @@ const showDatepicker3 = () => {
                                 
                                 <Picker 
                                 style={styles.picker} 
-                                selectedValue={frequencia} 
-                                onValueChange={(itemValue, itemIndex) => setFrequencia(itemValue)}
+                                selectedValue={frequency} 
+                                onValueChange={(itemValue, itemIndex) => setFrequency(itemValue)}
                                 
                                 >
                                     <Picker.Item label="A cada 4 horas" value="a cada 4 horas" />
@@ -152,7 +180,7 @@ const showDatepicker3 = () => {
                         </View>
 
                         <View>
-                            <TouchableOpacity style={styles.buttonTouch}>
+                            <TouchableOpacity style={styles.buttonTouch} onPress={handleReminder}>
                                 <LinearGradient style={styles.button} colors={['#00B2FF', '#1F8EFB', '#3B6FF8']}>
                                     <Text style={styles.buttonEnter}>Confirmar</Text>
                                 </LinearGradient>

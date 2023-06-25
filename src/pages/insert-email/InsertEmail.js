@@ -5,24 +5,32 @@ import { LinearGradient } from 'expo-linear-gradient';
 import authService from '../../services/auth.service';
 
 import back from "../../../assets/back.png"
-
 import olhoaberto from "../../../assets/olhosenha.png"
 import olhofechado from "../../../assets/olhosenhafechado.png"
 
-
-
 export default function InsertEmail({navigation}){
 
+    const [name, setName] = useState("")
+    const [lastname, setLastName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [isPasswordVisible, setPasswordVisible] = useState(false);
+
+    const handlePasswordChange = (text) => {
+        setPassword(text);
+    };
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!isPasswordVisible);
+    };
 
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            await authService.signup(email, password).then(
+            await authService.signup(name, lastname, email, password).then(
                 (response) => {
                     console.log("Sign up successfully", response)
-                    navigation.navigate('HomeRoute')
+                    navigation.navigate('Confirm')
                 },
                 (error) => {
                     console.log(error)
@@ -58,6 +66,8 @@ export default function InsertEmail({navigation}){
                                     style={styles.input}
                                     placeholder='Insira seu nome aqui...'
                                     placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
+                                    value={name}
+                                    onChangeText={(text) => setName(text)}
                                     />
                                 </View>
                             </View>
@@ -69,6 +79,8 @@ export default function InsertEmail({navigation}){
                                     style={styles.input}
                                     placeholder='Insira seu sobrenome aqui...'
                                     placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
+                                    value={lastname}
+                                    onChangeText={(text) => setLastName(text)}
                                     />
                                 </View>
                             </View>
@@ -78,7 +90,7 @@ export default function InsertEmail({navigation}){
                                 <View style={styles.input_container}>
                                 <TextInput
                                     style={styles.input}
-                                    placeholder='Insira seu E-mail aqui......'
+                                    placeholder='Insira seu email aqui......'
                                     placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
                                     value={email}
                                     onChangeText={(text) => setEmail(text)}
@@ -104,7 +116,7 @@ export default function InsertEmail({navigation}){
 
                                 <View style={styles.rules}>
                                     <Text style={{color:'#fff'}}>Sua senha deve conter pelo menos 
-                                        <Text style={{fontWeight:700}}> 6 dígitos. </Text>
+                                        <Text style={{fontWeight:700}}> 6 caracteres. </Text>
                                         {/* incluindo
                                         <Text style={{fontWeight:700}}> letras e números.</Text> */}
                                     </Text>
@@ -130,9 +142,7 @@ export default function InsertEmail({navigation}){
                             </View>
                              */}
 
-                            <TouchableOpacity style={styles.buttonTouch} onPress={() => {
-                                navigation.navigate('HomeRoute')
-                            }}>
+                            <TouchableOpacity style={styles.buttonTouch} onPress={handleSignup}>
                                 <LinearGradient style={styles.button} colors={['#00B2FF', '#1F8EFB', '#3B6FF8']}>
                                     <Text style={styles.buttonEnter}>Continuar</Text>
                                 </LinearGradient>
@@ -215,7 +225,7 @@ const styles = StyleSheet.create({
         marginTop:25,
         height: 50, 
         width:"100%", 
-        marginBottom:20
+        marginBottom:20,
         marginBottom:20
     },
 

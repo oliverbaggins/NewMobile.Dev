@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import {Text, View, StyleSheet,Image, TouchableOpacity, TextInput, SafeAreaView, ScrollView} from 'react-native'
+import {Text, View, StyleSheet,Image, TouchableOpacity, TextInput, SafeAreaView, ScrollView, Alert} from 'react-native'
 import { Stack, useRouter } from 'expo-router'
-
 import logoperfil from "../../../assets/logoperfil.png"
 import relogio from "../../../assets/relogiocortado.png"
 import menu from "../../../assets/menu.png"
 import ScheduleList from './components/schedulelist'
 import Dias from './components/dia'
 
+import authService from '../../services/auth.service';
+import { Button } from 'react-native-web';
+  
 export default function AddRemedy({navigation}){
+
+    const [user, setUser] = useState([]);
+
+    useEffect(() => {
+        authService.loggeduser().then(
+            (response) => {
+                setUser(response.data)
+            },
+            (error) => {
+                console.log(error)
+            }
+        )
+    }, [])
 
     return (
         <SafeAreaView>
@@ -24,7 +39,7 @@ export default function AddRemedy({navigation}){
                                 </View>
 
                                 <View style={{justifyContent:"center", marginLeft:8}}>
-                                    <Text style={styles.textPerfil}>Olá, Carlos!</Text>
+                                    <Text style={styles.textPerfil}>Olá, {user.name}!</Text>
                                 </View>
                             </View>
 
@@ -45,19 +60,16 @@ export default function AddRemedy({navigation}){
                             }}>
                                 <View>
                                     <Text style={{color:"#fff", fontSize:20, fontWeight:700}}>Clique aqui</Text>
-                                    <Text style={{color:"#fff", fontSize:16, fontWeight:700, marginTop:16}}>Para agendar{'\n'}novos horários</Text>
+                                    <Text style={{color:"#fff", fontSize:16, fontWeight:700, marginTop:16}}>Para agendar um{'\n'}novo lembrete</Text>
                                 </View>
                                 <Image source={relogio}/> 
                             </TouchableOpacity> 
-                        </View>            
-                        
-                        
-                                    
-                                    
+                        </View>           
+
                         <View>
                                     
                             <View>
-                                <Text style={{marginLeft:20 ,fontWeight: 700, fontSize: 23, color:"#fff", marginTop:40, marginBottom:25}}>Seus horários</Text>
+                                <Text style={{marginLeft:20 ,fontWeight: 700, fontSize: 23, color:"#fff", marginTop:40, marginBottom:25}}>Seus lembretes</Text>
                                 
                             </View>
                             {/* <View style={{marginBottom:25}}>
@@ -77,6 +89,7 @@ export default function AddRemedy({navigation}){
 }
 
 const styles = StyleSheet.create({
+    
     container:{
         width:'100%',
         height:'100%',
@@ -117,6 +130,4 @@ const styles = StyleSheet.create({
         paddingLeft:24,
         paddingRight:24,
     },
-
-    
 })

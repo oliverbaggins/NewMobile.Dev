@@ -1,11 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {Text, View, StyleSheet,Image, TouchableOpacity, TextInput, SafeAreaView, ScrollView} from 'react-native'
 import { Stack, useRouter, Link } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRoute } from "@react-navigation/native"
 
 import fotoperfil from "../../../assets/fotoperfil.png"
 
+import authService from '../../services/auth.service';
+
 export default function Perfil({navigation}){
+
+    const [user, setUser] = useState({ name: '', lastname: '', email: '' });
+
+    useEffect(() => {
+      authService.loggeduser().then(
+        (response) => {
+          setUser(response.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }, []);
+  
+    const handleNameChange = (text) => {
+      setUser((prevUser) => ({ ...prevUser, name: text }));
+    };
+  
+    const handleLastNameChange = (text) => {
+      setUser((prevUser) => ({ ...prevUser, lastname: text }));
+    };
+  
+    const handleEmailChange = (text) => {
+      setUser((prevUser) => ({ ...prevUser, email: text }));
+    };
+
+    // const [name, setName] = useState(.name)
+    // const [lastname, setLastName] = useState(user.lastname)
+    // const [email, setEmail] = useState(user.email)
 
     return (
 
@@ -27,21 +59,24 @@ export default function Perfil({navigation}){
                             <Text style={styles.label}>Nome</Text>
                             <View style={styles.input_container1}>
                                 <TextInput
-                                value=''
                                 style={styles.input}
+                                value={user.name}
+                                onChangeText={handleNameChange}
                                 />
                             </View>
                             <Text style={styles.label}>Sobrenome</Text>
                             <View style={styles.input_container1}>
                                 <TextInput
-                                value=''
                                 style={styles.input}
+                                value={user.lastname}
+                                onChangeText={handleLastNameChange}
                                 />
                             </View>
                             <Text style={styles.label}>E-mail</Text>
                             <View style={styles.input_container1}>
                                 <TextInput
-                                value=''
+                                 value={user.email}
+                                 onChangeText={handleEmailChange}
                                 style={styles.input}
                                 />
                             </View>

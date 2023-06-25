@@ -1,11 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function authHeader() {
-  const user = JSON.parse(AsyncStorage.getItem("user"))
+export default async function authHeader() {
+  const user = await AsyncStorage.getItem("user");
 
-  if (user && user.accessToken) {
-    return { "Authorization": user.accessToken}
-  } else {
-    return {}
+  if (user) {
+    const parsedUser = JSON.parse(user);
+    if (parsedUser.accessToken) {
+      return { "Authorization": parsedUser.accessToken };
+    }
   }
+
+  return {};
 }

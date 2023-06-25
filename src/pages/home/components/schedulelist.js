@@ -1,29 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Modal, Pressable } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const DATA = [
-  {
-    id: '1',
-    title: 'Dipirona',
-    time: '08:30'
-  },
-  {
-    id: '2',
-    title: 'Vitaminas A e B',
-    time: '08:00'
-  },
-  {
-    id: '3',
-    title: 'Pracetamol',
-    time: '08:45'
-  },
-  {
-    id: '4',
-    title: 'Pracetamol',
-    time: '08:45'
-  },
-];
+import * as Notifications from 'expo-notifications'
+
+import remindersService from '../../../services/reminders.service';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 const ScheduleList = () => {
   // const [selectedId, setSelectedId] = useState(null);
@@ -35,6 +24,61 @@ const ScheduleList = () => {
   //     return acc;
   //   }, {})
   // );
+
+  const [reminders, setReminders] = useState([]);
+  const [selectedReminderId, setSelectedReminderId] = useState(null);
+
+  useEffect(() => {
+    console.log('passou')
+    remindersService.getReminders().then(
+      (response) => {
+        const data = response.data;
+        setReminders(data);
+        // Create a notification for each reminder
+        data.forEach((reminder) => {
+          const time = new Date(reminder.time);
+          // Schedule a notification using the time from the reminder
+          Notifications.scheduleNotificationAsync({
+            content: {
+              title: 'Hora do remédio!',
+              body: `O seu medicamento para usar agora é: ${reminder.medicine}`,
+              // You can customize the notification content here
+            },
+            trigger: {
+              seconds: (time.getTime() - Date.now()) / 1000,
+            },
+          });
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+  const deleteReminderById = (reminderId) => {
+    remindersService.deleteReminder(reminderId)
+      .then(() => {
+        console.log("Reminder deleted successfully");
+        setModalVisible(false);
+        // Refresh the reminders list after deletion
+        refreshReminders();
+      })
+      .catch((error) => {
+        console.error("Error deleting reminder:", error);
+      });
+  };
+
+  const refreshReminders = () => {
+    remindersService.getReminders()
+      .then((response) => {
+        const data = response.data;
+        setReminders(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const renderItem = ({ item }) => {
     // const isSelected = item.id === selectedId;
@@ -49,10 +93,16 @@ const ScheduleList = () => {
     //   }));
     // };
     return (
-      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.item}>
+      <TouchableOpacity
+        onPress={() => {
+          setSelectedReminderId(item._id);
+          setModalVisible(true);
+        }}
+        style={styles.item}
+      >
         <View style={styles.item1}>
-          <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.title}>{item.time}</Text>
+          <Text style={styles.title}>{item.medicine}</Text>
+          <Text style={styles.title}>{`${new Date(item.time).getHours()}:${new Date(item.time).getMinutes().toString().padStart(2, '0')}`}</Text>
         </View>
         {/* <View style={[styles.item2, { backgroundColor }]} /> */}
       </TouchableOpacity>
@@ -64,9 +114,9 @@ const ScheduleList = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={DATA}
+        data={reminders}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item._id}
         vertical
       />
       <View style={styles.centeredView}>
@@ -80,16 +130,19 @@ const ScheduleList = () => {
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={styles.textStyle}>Voltar</Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-              >
-                <Text style={styles.textStyle}>Deletar</Text>
-              </Pressable>
+              <LinearGradient style={[styles.button, styles.buttonClose]} colors={['#00B2FF', '#1F8EFB', '#3B6FF8']}>
+                <Pressable
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.textStyle}>Voltar</Text>
+                </Pressable>
+              </LinearGradient>
+
+              <LinearGradient style={[styles.button, styles.buttonOpen]} colors={['#F587A2', '#9A0025']}>
+                <Pressable onPress={() => deleteReminderById(selectedReminderId)}>
+                  <Text style={styles.textStyle}>Deletar</Text>
+                </Pressable>
+              </LinearGradient>
+     
             </View>
           </View>
         </Modal>
@@ -172,9 +225,13 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 10,
     padding: 10,
     elevation: 2,
+    width: 80,
+    height: 50
   },
   buttonOpen: {
     backgroundColor: '#F587A2',
@@ -186,6 +243,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 18
   },
   modalText: {
     marginBottom: 15,

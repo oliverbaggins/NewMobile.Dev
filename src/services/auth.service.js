@@ -1,11 +1,14 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import authHeader from "./auth-header";
 
-const API_URL = "http://10.0.0.7:3000/auth"
+const API_URL = "http://192.168.68.1:3000/auth"
 
-const signup = (email, password) => {
+const signup = async (name, lastname, email, password) => {
   return axios
     .post(API_URL + "/signup", {
+      name,
+      lastname,
       email,
       password,
     })
@@ -18,7 +21,7 @@ const signup = (email, password) => {
     })
 }
 
-const login = (email, password) => {
+const login = async (email, password) => {
   return axios
     .post(API_URL + "/login", {
       email,
@@ -33,6 +36,11 @@ const login = (email, password) => {
     })
 }
 
+const loggeduser = async () => {
+  const headers = await authHeader();
+  return axios.get(API_URL + "/loggeduser", { headers });
+}
+
 const logout = () => {
   AsyncStorage.removeItem("user")
 }
@@ -44,6 +52,7 @@ const getCurrentUser = () => {
 const authService = {
   signup,
   login,
+  loggeduser,
   logout,
   getCurrentUser,
 }

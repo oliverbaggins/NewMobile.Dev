@@ -1,14 +1,21 @@
-import { View, Text, StyleSheet, Image, Touchable } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import XIcon from '../../../assets/x.png'
-import SetIcon from '../../../assets/set.png'
 import AccIcon from '../../../assets/acc.png'
 import ExitIcon from '../../../assets/exit.png'
 import Log from '../../../assets/log.png'
 
-export default function CustomDrawer({navigation}) {
+import authService from '../../services/auth.service'
+
+export default function CustomDrawer({ navigation }) {
+
+  const LogOut = () => {
+    authService.logout()
+    navigation.navigate('StartingRoute')
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.containerX}>
@@ -25,9 +32,7 @@ export default function CustomDrawer({navigation}) {
           <Text style={styles.textDrawer}>Perfil</Text>
           <Image style={styles.iconDrawer}  source={AccIcon} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.touchDrawer} onPress={() => {
-          navigation.navigate('StartingRoute')
-        }}>
+        <TouchableOpacity style={styles.touchDrawer} onPress={LogOut}>
           <Text style={styles.textDrawer}>Sair do Aplicativo</Text>
           <Image style={styles.iconDrawer} source={ExitIcon} />
         </TouchableOpacity>

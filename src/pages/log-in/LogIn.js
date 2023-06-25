@@ -9,11 +9,9 @@ import olhofechado from "../../../assets/olhosenhafechado.png"
 import google from "../../../assets/google.png"
 import facebook from "../../../assets/facebook.png"
 
-import olhoaberto from "../../../assets/olhosenha.png"
-import olhofechado from "../../../assets/olhosenhafechado.png"
+import authService from '../../services/auth.service';
 
 export default function LogIn({navigation}){
-
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -27,6 +25,22 @@ export default function LogIn({navigation}){
         setPasswordVisible(!isPasswordVisible);
     };
 
+
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        try {
+            await authService.login(email, password).then(
+                () => {
+                    navigation.navigate('HomeRoute')
+                },
+                (error) => {
+                    console.log(error)
+                }
+            )
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
 
@@ -54,6 +68,8 @@ export default function LogIn({navigation}){
                                 style={styles.input}
                                 placeholder='Insira seu email aqui...'
                                 placeholderTextColor={'rgba(255, 255, 255, 0.75)'}
+                                value={email}
+                                onChangeText={(text) => setEmail(text)}
                                 />
                             </View>
                         </View>
@@ -76,9 +92,7 @@ export default function LogIn({navigation}){
                         </View>
                         
 
-                        <TouchableOpacity style={styles.buttonTouch} onPress={() => {
-                             navigation.navigate('HomeRoute')
-                        }}>
+                        <TouchableOpacity style={styles.buttonTouch} onPress={handleLogin}>
                             <LinearGradient style={styles.button} colors={['#00B2FF', '#1F8EFB', '#3B6FF8']}>
                                 <Text style={styles.buttonEnter}>Entrar</Text>
                             </LinearGradient>
